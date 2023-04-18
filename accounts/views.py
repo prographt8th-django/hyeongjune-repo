@@ -3,7 +3,7 @@ from rest_framework import status, mixins
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
-
+from django.views.generic import ListView, CreateView, UpdateView
 from accounts import SocialType
 from accounts.models import User
 from accounts.serializers import UserSerializer

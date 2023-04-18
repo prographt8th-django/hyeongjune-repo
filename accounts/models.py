@@ -17,7 +17,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             email=email,
             nickname=nickname,
-            kwargs=kwargs,
+            **kwargs,
         )
         user.set_password(password)
         user.save(using=self._db)
@@ -29,7 +29,7 @@ class UserManager(BaseUserManager):
             email=email,
             nickname=nickname,
             password=password,
-            kwargs=kwargs,
+            **kwargs,
         )
         user.is_admin = True
         user.is_superuser = True
@@ -39,7 +39,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
-    social_info = models.OneToOneField('accounts.SocialInfo', on_delete=models.CASCADE, related_name='user')
+    social_info = models.OneToOneField('accounts.SocialInfo', on_delete=models.CASCADE, related_name='user', null=True)
     email = models.EmailField(max_length=255, unique=True)
     nickname = models.CharField(max_length=16, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
