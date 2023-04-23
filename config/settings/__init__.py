@@ -15,8 +15,9 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-LOG_PATH = os.path.join(BASE_DIR, 'logs')
 
+# log path settings
+LOG_PATH = os.path.join(BASE_DIR, 'logs')
 LOG_FILENAME = f"log_{datetime.now().strftime('%Y-%m-%d')}.log"
 
 # Quick-start development settings - unsuitable for production
@@ -112,20 +113,6 @@ TEMPLATES = [
         },
     },
 ]
-
-
-
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
