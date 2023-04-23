@@ -10,11 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+from datetime import datetime
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+LOG_PATH = os.path.join(BASE_DIR, 'logs')
 
+LOG_FILENAME = f"log_{datetime.now().strftime('%Y-%m-%d')}.log"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -110,7 +113,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
+
 
 
 # Database
@@ -165,43 +168,3 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "accounts.User"
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'root': {
-        'level': 'DEBUG',
-        'handlers': ['file']},
-    'formatters': {
-        'verbose': {
-            'format': (
-                '%(asctime)s %(levelname)s %(name)s %(message)s'
-                ' [PID:%(process)d:%(threadName)s]')},
-        'simple': {
-            'format': '%(levelname)s %(message)s'}},
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'}},
-    'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/usr/local/var/log/areas.log',
-            'maxBytes': 10*1024*1024,  # 10MB
-            'backupCount': 5,
-            'formatter': 'verbose'}
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': True},
-        'django.server': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': True},
-        'django.db.backends': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': True},
-    }}
