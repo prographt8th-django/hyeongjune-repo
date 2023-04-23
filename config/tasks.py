@@ -34,17 +34,20 @@ def update_valid_areas():
 
 @shared_task
 def update_visit_areas():
-    for target in target_areas:
-        for gender in GenderType.CHOICES:
-            for age_group in AgeGroupType.CHOICES:
-                for companion_type in CompanionType.CHOICES:
-                    params = {'gender': gender[0], 'ageGrp': age_group[0], 'companionType': companion_type[0]}
-                    response = requests.get(area_visit_statistic_url + target, headers=headers, params=params)
-                    valid_statistics = response.json()['contents']['raw']
-                    date = datetime.strptime(valid_statistics[-1]['date'], '%Y%m%d').date()
-                    area = Area.objects.get(code=target)
-                    AreaVisitStatistic.objects.create(area=area, gender=gender[0], age_group=age_group[0],
-                                                      companion=companion_type[0],
-                                                      travel_count=valid_statistics[-1]['travelerCount'] or 0,
-                                                      travel_date=date)
-                    export_celery_log('celery_logs', str(valid_statistics[-1]))
+    try:
+        for target in target_areas:
+            for gender in GenderType.CHOICES:
+                for age_group in AgeGroupType.CHOICES:
+                    for companion_type in CompanionType.CHOICES:
+                        params = {'gender': gender[0], 'ageGrp': age_group[0], 'companionType': companion_type[0]}
+                        response = requests.get(area_visit_statistic_url + target, headers=headers, params=params)
+                        valid_statistics = response.json()['contents']['raw']
+                        date = datetime.strptime(valid_statistics[-1]['date'], '%Y%m%d').date()
+                        area = Area.objects.get(code=target)
+                        AreaVisitStatistic.objects.create(area=area, gender=gender[0], age_group=age_group[0],
+                                                          companion=companion_type[0],
+                                                          travel_count=valid_statistics[-1]['travelerCount'] or 0,
+                                                          travel_date=date)
+                        export_celery_log('celery_logs', str(valid_statistics[-1]))
+    except Exception as e:
+        print(e)

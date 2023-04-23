@@ -18,3 +18,6 @@ class AreaVisitStatistic(models.Model):
     companion = models.CharField(max_length=31, choices=CompanionType.CHOICES, default=CompanionType.NOT_FAMILY)
     travel_count = models.PositiveIntegerField(default=0)
     travel_date = models.DateField()
+
+    def __str__(self):
+        return f'{self.area}, {self.gender}, {self.age_group}, {self.companion}, {self.travel_date}'
